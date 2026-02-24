@@ -34,6 +34,7 @@ use Sitegeist\SchemeOnYou\Domain\Schema\OpenApiReference;
 use Sitegeist\SchemeOnYou\Domain\Schema\OpenApiSchema;
 use Sitegeist\SchemeOnYou\Domain\Schema\OpenApiSchemaCollection;
 use Sitegeist\SchemeOnYou\Domain\Schema\SchemaType;
+use Sitegeist\SchemeOnYou\Infrastructure\InterfaceImplementationDetector;
 use Sitegeist\SchemeOnYou\Tests\Controller\PathController;
 
 #[Flow\Proxy(false)]
@@ -72,6 +73,10 @@ final class OpenApiDocumentFactoryTest extends TestCase
         $mockRoutesProvider = $this->getMockBuilder(RoutesProviderInterface::class)
             ->onlyMethods(['getRoutes'])
             ->getMock();
+
+        $mockInterfaceImplementationDetector = $this->getMockBuilder(InterfaceImplementationDetector::class)
+              ->getMock();
+
         $mockRoutesProvider->expects($this->any())
             ->method('getRoutes')
             ->willReturn(Routes::create(
@@ -127,7 +132,8 @@ final class OpenApiDocumentFactoryTest extends TestCase
             $mockReflectionService,
             $mockRoutesProvider,
             $mockObjectManager,
-            new UriFactory()
+            new UriFactory(),
+            $mockInterfaceImplementationDetector
         );
     }
 
